@@ -1,14 +1,19 @@
 package com.example.musicplayer;
 
 import android.content.Context;
+import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import static com.example.musicplayer.MainActivity.musicFiles;
 
 
 /**
@@ -19,10 +24,13 @@ import android.view.ViewGroup;
  */
 public class songsFragment extends Fragment {
 
-    private OnFragmentInteractionListener mListener;
+    RecyclerView recyclerView;
+    MusicAdaptor musicAdaptor;
+
 
     public songsFragment() {
         // Required empty public constructor
+
     }
 
 
@@ -31,29 +39,21 @@ public class songsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_songs, container, false);
+        recyclerView = view.findViewById(R.id.recycler_view);
+        recyclerView.setHasFixedSize(true);
+
+        if(!(musicFiles.size() <1)){
+            musicAdaptor = new MusicAdaptor(getContext(),musicFiles);
+            recyclerView.setAdapter(musicAdaptor);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.VERTICAL,false));
+
+        }
+
+
+
         return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
 
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
 }
